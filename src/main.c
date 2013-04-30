@@ -249,7 +249,7 @@ int main(int argc,char **argv)
 	arg[iarg++] = (gchar*)"opkg";
 	arg[iarg++] = (gchar*)"list-upgradable";
 	arg[iarg++] = NULL;
-	gDebug(LOG_INFO,ROUTINE_NAME,"Executing action:%s",arg);
+	gDebug(LOG_INFO,ROUTINE_NAME,"Executing action");
 	action(arg);
 	g_free(arg);
 
