@@ -299,40 +299,42 @@ int main(int argc,char **argv)
 	RenderString("Searching for additional commands...",67,135,590,LEFT,SMALL,bgra[blue]);
 
 	FILE *fp = fopen("/tmp/opkgfb_cmds","r");
-  if( fp == NULL ) {
-		printf("No extra opkgfb commands found");
-  }
-	char line[1024];
-	while(fgets(line, 1024, fp) != NULL)	{
-		memset(lbb, 0, var_screeninfo.yres*fix_screeninfo.line_length);
-		memcpy(lfb, lbb, var_screeninfo.yres*fix_screeninfo.line_length);
-		RenderBox(60,100,660,150,GRID,bgra[white]);
-		RenderBox(62,102,658,148,FILL,bgra[gray]);
-		RenderBox(60,150,660,180,GRID,bgra[white]);
-		RenderBox(62,152,658,178,FILL,bgra[gray]);
-		RenderBox(60,180,660,210,GRID,bgra[white]);
-		RenderBox(62,182,658,208,FILL,bgra[gray]);
+	if (fp) {
+		char line[1024];
+		while(fgets(line, 1024, fp) != NULL) {
+			memset(lbb, 0, var_screeninfo.yres*fix_screeninfo.line_length);
+			memcpy(lfb, lbb, var_screeninfo.yres*fix_screeninfo.line_length);
+			RenderBox(60,100,660,150,GRID,bgra[white]);
+			RenderBox(62,102,658,148,FILL,bgra[gray]);
+			RenderBox(60,150,660,180,GRID,bgra[white]);
+			RenderBox(62,152,658,178,FILL,bgra[gray]);
+			RenderBox(60,180,660,210,GRID,bgra[white]);
+			RenderBox(62,182,658,208,FILL,bgra[gray]);
 
-		if (strlen(line) && line[strlen(line)-1] == '\r') {
-			line[strlen(line)-1] = 0;
+			if (strlen(line) && line[strlen(line)-1] == '\r') {
+				line[strlen(line)-1] = 0;
+			}
+			if (strlen(line) && line[strlen(line)-1] == '\n') {
+				line[strlen(line)-1] = 0;
+			}
+			char command[STDBUFFER_SIZE];
+			if(strstr(line, "install")) {
+				RenderString(line,67,135,590,LEFT,SMALL,bgra[blue]);
+				sprintf(command, "opkg %s",line);
+				system(command);
+			}
+			if(strstr(line, "remove")) {
+				RenderString(command,67,135,590,LEFT,SMALL,bgra[blue]);
+				sprintf(command, "opkg --autoremove %s",line);
+				system(command);
+			}
+			sleep(2);
 		}
-		if (strlen(line) && line[strlen(line)-1] == '\n') {
-			line[strlen(line)-1] = 0;
-		}
-		char command[STDBUFFER_SIZE];
-		if(strstr(line, "install")) {
-			RenderString(line,67,135,590,LEFT,SMALL,bgra[blue]);
-			sprintf(command, "opkg %s",line);
-			system(command);
-		}
-		if(strstr(line, "remove")) {
-			RenderString(command,67,135,590,LEFT,SMALL,bgra[blue]);
-			sprintf(command, "opkg --autoremove %s",line);
-			system(command);
-		}
-		sleep(2);
+		fclose(fp);
 	}
-	fclose(fp);
+	else
+		printf("No extra opkgfb commands found");
+
 //--------------------------------------------------------------  OPKGFB EXTRA COMMANDS ------------------------------------
 
 	FTC_Manager_Done(manager);
