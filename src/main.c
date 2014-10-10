@@ -177,8 +177,8 @@ int main(int argc,char **argv)
 	
 	setcolors((unsigned short *)defaultcolors, 0, SIZECOLTABLE, bpp);
 	
-	if(!(lfb = (unsigned char*)mmap(0, fix_screeninfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0)))
-	{
+	lfb = (unsigned char*)mmap(0, fix_screeninfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
+	if (lfb == MAP_FAILED) {
 		gDebug(LOG_ERR,ROUTINE_NAME,"mapping");
 		return 1;
 	}
