@@ -1,4 +1,5 @@
-INCLUDES = -I$(top_srcdir)/include
+AM_CFLAGS = @FREETYPE_CFLAGS@ @GLIB_CFLAGS@
+AM_CPPFLAGS = -I$(top_srcdir)/include
 
 bin_PROGRAMS = opkgfb
 opkgfb_SOURCES = main.c render.c 
