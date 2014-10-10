@@ -141,20 +141,20 @@ int main(int argc,char **argv)
 		if(fb<1)
 		{
 			gDebug(LOG_ERR,ROUTINE_NAME,"Framebuffer failed");
-			return;
+			return 1;
 		}
 	}
 
 	if(ioctl(fb, FBIOGET_FSCREENINFO, &fix_screeninfo) == -1)
 	{
 		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_FSCREENINFO fehlgeschlagen");
-		return;
+		return 1;
 	}
 
 	if(ioctl(fb, FBIOGET_VSCREENINFO, &var_screeninfo) == -1)
 	{
 		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_VSCREENINFO fehlgeschlagen");
-		return;
+		return 1;
 	}
 	
 	var_screeninfo.xres=var_screeninfo.xres_virtual=720;
@@ -164,13 +164,13 @@ int main(int argc,char **argv)
 	if(ioctl(fb, FBIOPUT_VSCREENINFO, &var_screeninfo) == -1)
 	{
 		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOPUT_VSCREENINFO");
-		return;
+		return 1;
 	}
 
 	if(ioctl(fb, FBIOGET_FSCREENINFO, &fix_screeninfo) == -1)
 	{
 		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_FSCREENINFO");
-		return;
+		return 1;
 	}
 	
 	setcolors((unsigned short *)defaultcolors, 0, SIZECOLTABLE, bpp);
@@ -178,14 +178,14 @@ int main(int argc,char **argv)
 	if(!(lfb = (unsigned char*)mmap(0, fix_screeninfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0)))
 	{
 		gDebug(LOG_ERR,ROUTINE_NAME,"mapping");
-		return;
+		return 1;
 	}
 
 	if((error = FT_Init_FreeType(&library)))
 	{
 		gDebug(LOG_ERR,ROUTINE_NAME,"FT_Init_FreeType 0x%.2X", error);
 		munmap(lfb, fix_screeninfo.smem_len);
-		return;
+		return 1;
 	}
 
 	if((error = FTC_Manager_New(library, 1, 2, 0, &MyFaceRequester, NULL, &manager)))
@@ -193,7 +193,7 @@ int main(int argc,char **argv)
 		gDebug(LOG_ERR,ROUTINE_NAME,"FTC_Manager_New 0x%.2X", error);
 		FT_Done_FreeType(library);
 		munmap(lfb, fix_screeninfo.smem_len);
-		return;
+		return 1;
 	}
 
 	if((error = FTC_SBitCache_New(manager, &cache)))
@@ -202,7 +202,7 @@ int main(int argc,char **argv)
 		FTC_Manager_Done(manager);
 		FT_Done_FreeType(library);
 		munmap(lfb, fix_screeninfo.smem_len);
-		return;
+		return 1;
 	}
 
 	if((error = FTC_Manager_LookupFace(manager, FONT, &face)))
@@ -211,7 +211,7 @@ int main(int argc,char **argv)
 		FTC_Manager_Done(manager);
 		FT_Done_FreeType(library);
 		munmap(lfb, fix_screeninfo.smem_len);
-		exit(-1);
+		return 1;
 	}
 	else	desc.face_id = FONT;
 
@@ -225,7 +225,7 @@ int main(int argc,char **argv)
 		FTC_Manager_Done(manager);
 		FT_Done_FreeType(library);
 		munmap(lfb, fix_screeninfo.smem_len);
-		exit(-1);
+		return 1;
 	}
 
 	// Screen leeren
@@ -348,6 +348,6 @@ int main(int argc,char **argv)
 	free(lbb);
 	g_string_free(tstr, TRUE);
 	//system("cp -a /var/lib/opkg_old/* /var/lib/opkg/"); //for testing only
-	exit(0);
+	return 0;
 }
 
