@@ -1,9 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
 #include "main.h"
 #include "render.h"
 #include "colors.h"
-#include<string.h>
-#include<stdio.h>
-#include<stdlib.h>
 
 static GPid pid;
 static GIOChannel *chout, *cherr;
