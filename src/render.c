@@ -16,7 +16,6 @@ int RenderChar(FT_ULong currentchar, int sx, int sy, int ex, unsigned char *colo
 	FT_UInt glyphindex;
 	FT_Vector kerning;
 	FT_Error error;
-	int tmpcolor;
 
 	if(!(glyphindex = FT_Get_Char_Index(face, currentchar)))
 	{
@@ -112,7 +111,6 @@ void RenderBox(int sx, int sy, int ex, int ey, int mode, unsigned char *color)
 {
 	int bpp=4;
 	int loop;
-	int tx;
 	if(mode == FILL)
 	{
 		for(; sy <= ey; sy++)
