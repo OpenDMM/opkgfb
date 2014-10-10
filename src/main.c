@@ -5,12 +5,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-GPid pid=0;
-GIOChannel *chout=NULL, *cherr=NULL;
-static GMainLoop *main_loop = NULL;
-static int function=0;
-static int upgradable=0;
-static int upgradeCount=0;
+static GPid pid;
+static GIOChannel *chout, *cherr;
+static GMainLoop *main_loop;
+static int function;
+static int upgradable;
+static int upgradeCount;
+
 #define STDBUFFER_SIZE 512
 
 gboolean out_watch(GIOChannel *source, GIOCondition condition, gpointer data)
