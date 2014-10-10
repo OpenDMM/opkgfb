@@ -205,9 +205,9 @@ int main(int argc,char **argv)
 		return;
 	}
 
-	if((error = FTC_Manager_Lookup_Face(manager, FONT, &face)))
+	if((error = FTC_Manager_LookupFace(manager, FONT, &face)))
 	{
-		gDebug(LOG_ERR,ROUTINE_NAME,"FTC_Manager_Lookup_Face 0x%.2X", error);
+		gDebug(LOG_ERR,ROUTINE_NAME,"FTC_Manager_LookupFace 0x%.2X", error);
 		FTC_Manager_Done(manager);
 		FT_Done_FreeType(library);
 		munmap(lfb, fix_screeninfo.smem_len);
