@@ -39,6 +39,9 @@ int RenderChar(FT_ULong currentchar, int sx, int sy, int ex, unsigned char *colo
 	else
 		kerning.x = 0;
 
+	if (sx == -1 && sy == -1 && ex == -1 && color == NULL)
+		return sbit->xadvance + kerning.x;
+
 	if(sx + sbit->xadvance >= ex)
 		return -1;
 	for(row = 0; row < sbit->height; row++)
@@ -61,20 +64,14 @@ int RenderChar(FT_ULong currentchar, int sx, int sy, int ex, unsigned char *colo
 	return sbit->xadvance + kerning.x;
 }
 
-int GetStringLen(const char *string, int size)
+static int GetStringLen(const char *string, int size)
 {
 	int stringlen = 0;
 
-	switch (size)
-	{
-		case VERY_SMALL: desc.width = desc.height = FONTHEIGHT_VERY_SMALL; break;
-		case SMALL     : desc.width = desc.height = FONTHEIGHT_SMALL     ; break;
-		case BIG       : desc.width = desc.height = FONTHEIGHT_BIG       ; break;
-	}
 	prev_glyphindex = 0;
 	while(*string != '\0')
 	{
-		stringlen += RenderChar(*string, -1, -1, -1, "");
+		stringlen += RenderChar(*string, -1, -1, -1, NULL);
 		string++;
 	}
 	return stringlen;
