@@ -149,13 +149,13 @@ int main(int argc,char **argv)
 
 	if(ioctl(fb, FBIOGET_FSCREENINFO, &fix_screeninfo) == -1)
 	{
-		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_FSCREENINFO fehlgeschlagen");
+		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_FSCREENINFO failed");
 		return 1;
 	}
 
 	if(ioctl(fb, FBIOGET_VSCREENINFO, &var_screeninfo) == -1)
 	{
-		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_VSCREENINFO fehlgeschlagen");
+		gDebug(LOG_ERR,ROUTINE_NAME,"FBIOGET_VSCREENINFO failed");
 		return 1;
 	}
 	
